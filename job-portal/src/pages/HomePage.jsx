@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography,Card, CardContent } from "@mui/material";
+import { Typography, Card, CardContent } from "@mui/material";
 import JobPage from "./JobPage";
 
+
 const HomePage = () => {
+  
   return (
     <>
       <Grid container spacing={2} columns={12} className="justify-center">
@@ -32,7 +34,7 @@ const HomePage = () => {
           </Card>
         </Grid>
         <Grid xs={6}>
-          <JobPage/>
+          <JobPage />
         </Grid>
 
         <Grid xs={2.5} className="my-2">

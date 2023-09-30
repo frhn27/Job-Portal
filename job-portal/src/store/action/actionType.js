@@ -1,0 +1,1 @@
+export const FETCH_JOB_SUCCESS = "FETCH_JOB_SUCCESS"
