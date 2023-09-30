@@ -11,6 +11,7 @@ import {
   CardHeader,
   Avatar,
   Button,
+  CircularProgress,
 } from "@mui/material";
 
 import {
@@ -19,6 +20,9 @@ import {
   PaidOutlined,
   GroupsOutlined,
 } from "@mui/icons-material";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchJobs } from "../store/action/actionCreate";
 
 const data = [
   {
@@ -35,37 +39,29 @@ const data = [
   },
 ];
 
-const films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: "Pulp Fiction", year: 1994 },
-  {
-    title: "The Lord of the Rings: The Return of the King",
-    year: 2003,
-  },
-];
+const films = [];
 
 const JobPage = () => {
   const [category, setCategory] = useState(null);
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+
+  const job = useSelector((state) => {
+    return state.jobs;
+  });
 
   const handleSubmit = () => {
     console.log("<<<<<<< MASUK");
   };
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(fetchJobs());
+    }, 1000);
+  }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log(`menggunakn debounce`, search);
-    }, 500);
-
-    return () => clearTimeout(timer);
+    console.log(search, "<<<<<<<<<<<<<<<<<<<<");
   }, [search]);
-
-  console.log(category);
 
   return (
     <>
@@ -93,7 +89,7 @@ const JobPage = () => {
                       variant="outlined"
                       type="search"
                       size="small"
-                      placeholder="UI/UX"
+                      placeholder="Backend"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -124,109 +120,67 @@ const JobPage = () => {
         </CardContent>
       </Card>
 
-      <Card className="my-2 mx-2">
-        <CardHeader
-          className="justify-center"
-          avatar={
-            <Avatar
-              className="w-24 h-24"
-              src="https://tse2.mm.bing.net/th?id=OIP.EVra35tTp2Y0IWkBcE7puQHaF7&pid=Api&P=0&h=180"
-              aria-label="recipe"
-            />
-          }
-          title="Junior UI/UX Designer"
-          subheader="Slack Technologies, SLC"
-          action={
-            <Card className="flex flex-row items-center mt-6 mr-2">
-              <BookmarkBorderOutlined />
-              <Typography className="text-sm mx-2">Save Jobs</Typography>
+      {job && job.length === 0 ? (
+        <Box className="flex justify-center items-center">
+          <CircularProgress />;
+        </Box>
+      ) : (
+        job.map((items) => {
+          return (
+            <Card className="my-2 mx-2" key={items.id}>
+              <CardHeader
+                className="justify-center"
+                avatar={
+                  <Avatar
+                    className="w-24 h-24"
+                    src="https://tse2.mm.bing.net/th?id=OIP.EVra35tTp2Y0IWkBcE7puQHaF7&pid=Api&P=0&h=180"
+                    aria-label="recipe"
+                  />
+                }
+                title={items.title}
+                subheader={items.company.display_name}
+                action={
+                  <Card className="flex flex-row items-center mt-6 mr-2">
+                    <BookmarkBorderOutlined />
+                    <Typography className="text-sm mx-2">Save Jobs</Typography>
+                  </Card>
+                }
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {items.description}
+                </Typography>
+              </CardContent>
+
+              <CardContent className="flex -flex-row justify-between">
+                <Box className="flex flex-row justify-center items-center">
+                  <PaidOutlined className="mr-2" />
+                  <Typography className="text-sm  text-xl font-semibold">
+                    $ {items.salary_max}
+                  </Typography>
+                  <Typography className="text-sm text-sm text-slate-300 ml-2 text-end">
+                    /Month
+                  </Typography>
+                </Box>
+
+                <Box className="flex flex-row justify-center items-center">
+                  <GroupsOutlined className="mr-2" />
+                  <Typography className="text-sm  text-xl font-semibold">
+                    {Math.floor(Math.random() * 100)}
+                  </Typography>
+                  <Typography className="text-sm text-sm ml-2  text-slate-300 text-end">
+                    People Applied
+                  </Typography>
+                </Box>
+                
+                <Button variant="contained" onClick={handleSubmit}>
+                  Apply Now
+                </Button>
+              </CardContent>
             </Card>
-          }
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
-          </Typography>
-        </CardContent>
-
-        <CardContent className="flex -flex-row justify-between">
-          <Box className="flex flex-row justify-center items-center">
-            <PaidOutlined className="mr-2" />
-            <Typography className="text-sm  text-xl font-semibold">
-              $12-14k
-            </Typography>
-            <Typography className="text-sm text-sm text-slate-300 ml-2 text-end">
-              /Month
-            </Typography>
-          </Box>
-
-          <Box className="flex flex-row justify-center items-center">
-            <GroupsOutlined className="mr-2" />
-            <Typography className="text-sm  text-xl font-semibold">
-              55
-            </Typography>
-            <Typography className="text-sm text-sm ml-2  text-slate-300 text-end">
-              People Applied
-            </Typography>
-          </Box>
-
-          <Button variant="contained">Aplly Now</Button>
-        </CardContent>
-      </Card>
-      
-      <Card className="my-2 mx-2">
-        <CardHeader
-          className="justify-center"
-          avatar={
-            <Avatar
-              className="w-24 h-24"
-              src="https://tse2.mm.bing.net/th?id=OIP.EVra35tTp2Y0IWkBcE7puQHaF7&pid=Api&P=0&h=180"
-              aria-label="recipe"
-            />
-          }
-          title="Junior UI/UX Designer"
-          subheader="Slack Technologies, SLC"
-          action={
-            <Card className="flex flex-row items-center mt-6 mr-2">
-              <BookmarkBorderOutlined />
-              <Typography className="text-sm mx-2">Save Jobs</Typography>
-            </Card>
-          }
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
-          </Typography>
-        </CardContent>
-
-        <CardContent className="flex -flex-row justify-between">
-          <Box className="flex flex-row justify-center items-center">
-            <PaidOutlined className="mr-2" />
-            <Typography className="text-sm  text-xl font-semibold">
-              $12-14k
-            </Typography>
-            <Typography className="text-sm text-sm text-slate-300 ml-2 text-end">
-              /Month
-            </Typography>
-          </Box>
-
-          <Box className="flex flex-row justify-center items-center">
-            <GroupsOutlined className="mr-2" />
-            <Typography className="text-sm  text-xl font-semibold">
-              55
-            </Typography>
-            <Typography className="text-sm text-sm ml-2  text-slate-300 text-end">
-              People Applied
-            </Typography>
-          </Box>
-
-          <Button variant="contained">Aplly Now</Button>
-        </CardContent>
-      </Card>
+          );
+        })
+      )}
     </>
   );
 };
