@@ -4,7 +4,6 @@ import {
   Toolbar,
   Typography,
   Badge,
-  Container,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import {
@@ -16,8 +15,7 @@ import {
   Notifications,
   PersonRounded,
 } from "@mui/icons-material";
-
-import * as React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -27,9 +25,11 @@ const Navbar = () => {
           <Toolbar className="justify-between bg-slate-800">
             <Box className="flex flex-row p-2 cursor-pointer">
               <AcUnitOutlined className="mx-1" />
+              <Link to="/">
               <Typography className="text-red-400 hover:text-slate-200 font-semibold mr-2">
                 Job Portal
               </Typography>
+              </Link>
             </Box>
 
             <Box className="flex flex-row justify-center items-center">
@@ -49,9 +49,11 @@ const Navbar = () => {
 
               <Box className="flex flex-row p-2 cursor-pointer hover:text-red-500 mx-2">
                 <AssignmentIndOutlined className="mx-2" />
+                <Link to="/profile">
                 <Typography className="text-red-400 hover:text-slate-200 font-semibold mr-2">
                   my profile
                 </Typography>
+                </Link>
               </Box>
 
               <Box className="flex flex-row p-2 cursor-pointer hover:text-red-500 mx-2">
